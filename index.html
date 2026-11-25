@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Corp Por · Voice Casting Prototype</title>
+<link rel="stylesheet" href="src/style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/" } }
+</script>
+</head>
+<body>
+<div id="intro">
+  <div class="panel">
+    <div class="kicker">Concept prototype · WebXR · Meta Quest 3 and desktop</div>
+    <h1>Corp Por</h1>
+    <p class="sub">Speak the words of power. The bolt follows your hand.</p>
+    <div class="how">
+      <div><b>Quest</b> Hold <kbd>trigger</kbd>, aim, say <i>“Corp Por”</i>, release. <kbd>A</kbd> casts without voice.</div>
+      <div><b>Desktop</b> Click to look. Hold <kbd>Space</kbd>, say <i>“Corp Por”</i>. <kbd>1</kbd> casts without voice. <kbd>WASD</kbd> moves.</div>
+      <div><b>Also</b> <i>“Vas Flam”</i> calls a pillar of fire. Get struck while casting and the spell fizzles.</div>
+    </div>
+    <div class="buttons">
+      <button id="btnDesktop">Enter on desktop</button>
+      <span id="vrslot"></span>
+    </div>
+    <div id="loadstate">Loading the dungeon…</div>
+    <div class="fine">Unofficial fan concept for discussion. No affiliation with any rights holder. Original code; daemon model by Grefuntor (CC BY 3.0), textures from Poly Haven (CC0). <a href="CREDITS.md" style="color:#8d8577">Credits</a></div>
+  </div>
+</div>
+<div id="hud" class="hidden">
+  <div id="cross"></div>
+  <div id="bars">
+    <div class="bar"><span>Health</span><div class="track"><div id="hpFill" class="fill hp"></div></div></div>
+    <div class="bar"><span>Mana</span><div class="track"><div id="mpFill" class="fill mp"></div></div></div>
+  </div>
+  <div id="voice"><span id="micdot"></span><span id="voiceText">Hold Space and speak</span></div>
+  <div id="log"></div>
+  <div id="tag">Concept prototype · desktop view of the Quest 3 build</div>
+</div>
+<script type="module" src="src/boot.js"></script>
+</body>
+</html>
