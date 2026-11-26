@@ -14,9 +14,15 @@ Runs in the Meta Quest 3 browser (immersive VR) and in desktop Chrome or Edge.
 - If the daemon's fire hits you while you are casting, the spell fizzles.
 
 ## Voice
-Quest Browser has no Web Speech API, so the demo uses on-device **Vosk** (WebAssembly, about 40 MB model, downloaded once
-from the public vosk-browser host) with a small grammar of sound-alikes. Desktop Chrome/Edge use the browser's speech API.
-Force on-device mode with `?voice=vosk`. Add `?lowfx` to turn shadows off on weaker devices.
+Nothing to install. Two recognizers run side by side and the first one that hears a spell casts it:
+1. **On-device Vosk** (WebAssembly, small English model, about 41 MB). It downloads once on the first visit and is kept in
+   the browser (IndexedDB), so later visits start in a second or two and work offline. It only listens for the spell words,
+   which makes it robust to accents. Works in Chrome, Edge, Firefox, Safari and Meta Quest Browser.
+2. **Browser speech** (Web Speech API in Chrome, Edge, Safari) as a fallback while Vosk loads.
+Whatever is heard goes through a sound-alike matcher, so "car", "core", "corpse", "copper" or "core poor" all cast Corp Por,
+and "was flame" or "boss flame" casts Vas Flam. The bubble shows what was heard and what it was matched to.
+Options: `?voice=vosk` (only on-device), `?voice=web` (only browser speech), `?lang=sv-SE` (browser speech language).
+Add `?lowfx` to turn shadows off on weaker devices.
 
 ## Notes
 - This repo holds only text files: binary assets (textures, model) are stored as base64 and unpacked in the browser

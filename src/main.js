@@ -511,10 +511,16 @@ function damageDemon(n, src) {
 let talking = false;
 const voice = new Voice({
   onSpell: (id, heard) => beginCast(id, heard),
-  onText: (t, final) => { voiceLine = '“' + t.trim() + '”'; $('voiceText').textContent = voiceLine; vrHudDirty = true; },
+  // Show what was heard and what it was matched to, e.g. “corpse” → Corp Por
+  onText: (t, final, src) => { if (src === 'status') { if (talking) return; voiceLine = t; }
+    else voiceLine = '“' + t.trim() + '”' + (voiceMatched ? ' → ' + voiceMatched : '');
+    $('voiceText').textContent = voiceLine; vrHudDirty = true; },
+  onMatch: (t, words) => { if (words) voiceMatched = words; else if (voiceMatched) return;
+    voiceLine = '“' + t.trim() + '” → ' + (words || 'no spell, try “Corp Por”'); $('voiceText').textContent = voiceLine; vrHudDirty = true; },
   onState: (on) => { $('micdot').classList.toggle('on', on); },
 });
-function startTalk() { if (talking) return; talking = true; sound.resume(); voiceLine = 'Listening…'; $('voiceText').textContent = voiceLine; $('cross').classList.add('on'); voice.start(); vrHudDirty = true; }
+let voiceMatched = '';
+function startTalk() { if (talking) return; talking = true; voiceMatched = ''; sound.resume(); voiceLine = 'Listening…'; $('voiceText').textContent = voiceLine; $('cross').classList.add('on'); voice.start(); vrHudDirty = true; }
 function stopTalk() { if (!talking) return; talking = false; $('cross').classList.remove('on'); voice.stop(); vrHudDirty = true; }
 
 // ---------- desktop controls ----------
@@ -630,5 +636,6 @@ window.__demo = {
   talk(on) { on ? startTalk() : stopTalk(); }, voice,
   simTalk(on) { talking = on; $('micdot').classList.toggle('on', on); $('cross').classList.toggle('on', on); if (on) { voiceLine = 'Listening…'; $('voiceText').textContent = voiceLine; } },
   simWords(text) { voiceLine = '“' + text + '”'; $('voiceText').textContent = voiceLine; const sp = detectSpell(text); if (sp) beginCast(sp.id, text); },
+  hearFinal(text) { startTalk(); voice._handle(text, true, 'test'); setTimeout(() => stopTalk(), 300); },
   ready: () => demon.ready && $('loadstate').textContent.startsWith('Ready'),
 };
